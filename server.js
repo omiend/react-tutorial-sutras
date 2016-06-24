@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Additional middleware which will set headers that we need on each request.
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     // Set permissive CORS header - this allows this server to be used only as
     // an API server in conjunction with something like webpack-dev-server.
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -35,8 +35,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
+app.get('/api/comments', (req, res) => {
+  fs.readFile(COMMENTS_FILE, (err, data) => {
     if (err) {
       console.error(err);
       process.exit(1);
@@ -45,8 +45,8 @@ app.get('/api/comments', function(req, res) {
   });
 });
 
-app.post('/api/comments', function(req, res) {
-  fs.readFile(COMMENTS_FILE, function(err, data) {
+app.post('/api/comments', (req, res) => {
+  fs.readFile(COMMENTS_FILE, (err, data) => {
     if (err) {
       console.error(err);
       process.exit(1);
@@ -61,7 +61,7 @@ app.post('/api/comments', function(req, res) {
       text: req.body.text,
     };
     comments.push(newComment);
-    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), function(err) {
+    fs.writeFile(COMMENTS_FILE, JSON.stringify(comments, null, 4), (err) => {
       if (err) {
         console.error(err);
         process.exit(1);
@@ -72,6 +72,6 @@ app.post('/api/comments', function(req, res) {
 });
 
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Server started: http://localhost:' + app.get('port') + '/');
 });
